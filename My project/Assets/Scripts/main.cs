@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class main : MonoBehaviour
 {
-    private float speed=2f;
+    private float speed=5f;
     public float horizontalinput;
     public float verticalinput;
     public GameObject laserPrefab;
+    public float firerate = 0.25f;
+    public float nextfire = 0.0f;
+    public int life=3; 
     // Start is called before the first frame update
     void Start()
     {
@@ -19,8 +22,9 @@ public class main : MonoBehaviour
     {
         movement();
         bounds();
-        if(Input.GetKeyDown(KeyCode.Space))
+        if(Input.GetKeyDown(KeyCode.Space)&& Time.time>nextfire)
         {
+            nextfire = Time.time +firerate;
             Debug.Log("SPACEBAR PRESSED");
             Instantiate(laserPrefab,transform.position,Quaternion.identity );
         }
@@ -53,5 +57,13 @@ public class main : MonoBehaviour
         {
              transform.position=new Vector3(-9.5f,transform.position.y,transform.position.z);
         } 
+    }
+    public void damage()
+    {
+        life--;
+        if(life == 0)
+        {
+            Destroy(this.gameObject);
+        }
     }
 }
